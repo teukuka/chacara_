@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 30/05/2023 às 20:11
+-- Tempo de geração: 05/06/2023 às 21:48
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -33,6 +33,38 @@ CREATE TABLE `calendario` (
   `reserva_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `calendario`
+--
+
+INSERT INTO `calendario` (`datas`, `evento`, `reserva_id`) VALUES
+('2023-06-14', 'reserva', 7),
+('2023-06-15', 'reserva', 7),
+('2023-06-16', 'reserva', 7),
+('2023-06-17', 'reserva', 7),
+('2023-06-18', 'reserva', 7),
+('2023-06-19', 'reserva', 7),
+('2023-06-20', 'reserva', 7),
+('2023-06-21', 'reserva', 7),
+('2023-06-22', 'reserva', 7),
+('2023-07-04', 'reserva', 8),
+('2023-07-05', 'reserva', 8),
+('2023-07-06', 'reserva', 8),
+('2023-07-07', 'reserva', 8),
+('2023-07-08', 'reserva', 8),
+('2023-07-09', 'reserva', 8),
+('2023-07-10', 'reserva', 8),
+('2023-07-11', 'reserva', 8),
+('2023-07-12', 'reserva', 8),
+('2023-07-13', 'reserva', 8),
+('2023-07-14', 'reserva', 8),
+('2023-07-15', 'reserva', 8),
+('2023-07-16', 'reserva', 8),
+('2023-07-17', 'reserva', 8),
+('2023-07-18', 'reserva', 8),
+('2023-07-19', 'reserva', 8),
+('2023-07-20', 'reserva', 8);
+
 -- --------------------------------------------------------
 
 --
@@ -59,7 +91,8 @@ CREATE TABLE `dados_pessoal` (
 --
 
 INSERT INTO `dados_pessoal` (`usuario_id`, `Nome`, `CPF`, `Telefone`, `data_aniversario`, `nacionalidade`, `genero`, `rua`, `numero`, `cidade`, `CEP`, `estado`) VALUES
-(11, 'Gabriel Fernando Dos Santos Cocovilo', '6545', '(19)98951-6625', '2001-03-02', 'Brasil', 'masculino', 'waldemar da silva costa', 245, 'ndjodn', '13990-000', 'SP');
+(17, 'Gabriel Fernando Dos Santos Cocovilo', '494.061.218-08', '(19)98951-6625', '2001-03-02', 'Brasil', 'masculino', 'waldemar da silva costa', 245, 'Espirito santo do pinhal', '13990-005', 'SP'),
+(18, 'mateus camacho', '494.061.255-08', '(19)98951-6624', '2004-03-02', 'Brasil', 'masculino', 'waldemar da silva costa5', 248, 'Espirito santo do pinhal', '13990-005', 'SPs');
 
 -- --------------------------------------------------------
 
@@ -81,7 +114,29 @@ CREATE TABLE `funcionario` (
 --
 
 INSERT INTO `funcionario` (`nome`, `CPF`, `Telefone`, `funcao`, `salario`, `id_funcionario`) VALUES
-('Gabriel Fernando Dos Santos Cocovilo', '494.061.218-08', '(19)98951-6625', 'segurancaz', 4545, 1);
+('Gabriel Fernando Dos Santos Cocovilo', '494.061.218-08', '(19)98951-6625', 'seguranca', 4545, 7),
+('Jorge rei', '6545', '54545', 'moço', 1500, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `gasto`
+--
+
+CREATE TABLE `gasto` (
+  `mes` varchar(55) NOT NULL,
+  `valor` float NOT NULL,
+  `descricao` text NOT NULL,
+  `id_gasto` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `gasto`
+--
+
+INSERT INTO `gasto` (`mes`, `valor`, `descricao`, `id_gasto`) VALUES
+('Janeiro', 140, 'Conta de luz', 1),
+('Fevereiro', 250, 'manunteção da piscinas', 2);
 
 -- --------------------------------------------------------
 
@@ -98,6 +153,14 @@ CREATE TABLE `reserva` (
   `cafe` varchar(4) NOT NULL,
   `valor` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `reserva`
+--
+
+INSERT INTO `reserva` (`id_reserva`, `usuario_id`, `checkin`, `checkout`, `cozinheiro`, `cafe`, `valor`) VALUES
+(7, 18, '2023-06-14', '2023-06-22', 'sim', 'sim', 10700),
+(8, 16, '2023-07-04', '2023-07-20', 'sim', 'sim', 20700);
 
 -- --------------------------------------------------------
 
@@ -117,11 +180,10 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `usuario`, `email`, `senha`) VALUES
-(6, 'kaze', 'gabriel_cocovilo20@outlook.com', 'Coxinha123#b'),
-(8, 'kazes', 'gabriel_cocovilo20@outlook.com', 'Coxinha123#b'),
-(9, 'kazess', 'gabriel_cocovilo20@outlook.com', 'Coxinha123#b'),
-(10, 'fbehfbehb', 'gabriel_cocovilo20@outlook.com', 'Coxinha123#b'),
-(11, 'sei la', 'fernanda_cocovilo@hotmail.com', 'Batata123#b');
+(1, 'AdminAmigo', 'AdminAmigo@hotmail.com', 'SenhadoAdmin123#'),
+(16, 'kaze', 'gabriel_cocovilo20@outlook.com', 'Coxinha123#b'),
+(17, 'kazess', 'gabriel_kazuma@outlook.com', 'Coxinha123#b'),
+(18, 'Mateys', 'mateus@hotmail.com', 'Mateus123#b');
 
 --
 -- Índices para tabelas despejadas
@@ -146,6 +208,12 @@ ALTER TABLE `funcionario`
   ADD PRIMARY KEY (`id_funcionario`);
 
 --
+-- Índices de tabela `gasto`
+--
+ALTER TABLE `gasto`
+  ADD PRIMARY KEY (`id_gasto`);
+
+--
 -- Índices de tabela `reserva`
 --
 ALTER TABLE `reserva`
@@ -166,19 +234,25 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de tabela `gasto`
+--
+ALTER TABLE `gasto`
+  MODIFY `id_gasto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Restrições para tabelas despejadas

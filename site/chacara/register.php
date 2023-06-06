@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   var_dump($sql_insert_user);
   if ($conn->query($sql_insert_user) === TRUE) {
     var_dump($conn->affected_rows); 
-    header("Location: dados_pessoal.php");
+    header("Location: login.php");
     exit;
   } else {
     echo "Erro ao inserir o registro: " . $conn->error;

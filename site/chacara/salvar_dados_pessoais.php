@@ -34,41 +34,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Query para obter o usuário e email a partir do id_usuario
-    $query = "SELECT usuario, email FROM usuario WHERE id_usuario = $id_usuario";
+    $sql = "SELECT * FROM dados_pessoal WHERE usuario_id = $id_usuario";
+    $resultDadosPessoais = $conn->query($sql);
 
-    $result = $conn->query($query);
+    if ($resultDadosPessoais->num_rows <= 0) {
+      // Inserir os dados pessoais no banco de dados
+      $sql = "INSERT INTO dados_pessoal (nome, cpf, telefone, data_aniversario, nacionalidade, genero, rua, numero, cidade, cep, estado, usuario_id) VALUES ('$nome', '$cpf', '$telefone', '$dataNascimento', '$nacionalidade', '$genero', '$rua', '$numero', '$cidade', '$cep', '$estado', $id_usuario)";
 
-    if ($result->num_rows > 0) {
-      $row = $result->fetch_assoc();
-      $usuario = $row['usuario'];
-      $email = $row['email'];
+      if ($conn->query($sql) === true) {
+        // Dados pessoais inseridos com sucesso
+        echo "Dados pessoais inseridos com sucesso!";
+      } else {
+        // Erro ao inserir dados pessoais
+        echo "Erro ao inserir dados pessoais: " . $conn->error;
+      }
     } else {
-      echo "Usuário não encontrado!";
-      exit;
-    }
+      // Atualizar os dados pessoais no banco de dados
+      $sql = "UPDATE dados_pessoal SET nome='$nome', cpf='$cpf', telefone='$telefone', data_aniversario='$dataNascimento', nacionalidade='$nacionalidade', genero='$genero', rua='$rua', numero='$numero', cidade='$cidade', cep='$cep', estado='$estado' WHERE usuario_id = $id_usuario";
 
-    // Query para inserir os dados no banco de dados
-    $sql = "INSERT INTO dados_pessoal (usuario_id, nome, cpf, telefone, data_aniversario, nacionalidade, genero, rua, numero, cidade, CEP, estado)
-            VALUES ('$id_usuario', '$nome', '$cpf', '$telefone', '$dataNascimento', '$nacionalidade', '$genero', '$rua', '$numero', '$cidade', '$cep', '$estado')";
-
-    if ($conn->query($sql) === TRUE) {
-      echo "<html><head><script>
-        setTimeout(function() {
-          window.location.href = 'newindex.php';
-        }, 3000); // Redireciona após 3 segundos (3000 milissegundos)
-      </script></head><body></body></html>";
-      exit;
-    } else {
-      echo "Erro ao salvar os dados pessoais: " . $conn->error;
+      if ($conn->query($sql) === true) {
+        // Dados pessoais atualizados com sucesso
+        echo "Dados pessoais atualizados com sucesso!";
+      } else {
+        // Erro ao atualizar dados pessoais
+        echo "Erro ao atualizar dados pessoais: " . $conn->error;
+      }
     }
 
     $conn->close();
-  } else {
-    // Se os campos não foram recebidos corretamente, exiba uma mensagem de erro
-    echo "Erro ao receber os dados do formulário.";
   }
 }
 ?>
+ 
 
 <!DOCTYPE html>
 <html>
@@ -93,28 +90,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </ul>
     </nav>
   </header>
-     <section class="personal-data-section">
-        <div class="container">   
-      <h2>Dados salvos com sucesos</h2>
+  <section class="personal-data-section">
+    <div class="container">
+      <h2>Dados salvos com sucesso</h2>
       <form id="personalDataForm" action="newindex.php">
-  <button id="confirmarButton" type="button">Voltar para o início</button>
-</form>
+        <button id="confirmarButton" type="button">Voltar para o início</button>
+      </form>
 
-<script>
-  // Obtém o elemento do botão
-  var confirmarButton = document.getElementById('confirmarButton');
+      <script>
+        // Obtém o elemento do botão
+        var confirmarButton = document.getElementById('confirmarButton');
 
-  // Adiciona um ouvinte de evento de clique ao botão
-  confirmarButton.addEventListener('click', function() {
-    // Redireciona para a página especificada no atributo 'action'
-    window.location.href = document.getElementById('personalDataForm').action;
-  });
-</script>
-     </section>
+        // Adiciona um ouvinte de evento de clique ao botão
+        confirmarButton.addEventListener('click', function() {
+          // Redireciona para a página especificada no atributo 'action'
+          window.location.href = document.getElementById('personalDataForm').action;
+        });
+      </script>
+    </div>
+  </section>
   <footer>
     <p>Todos os direitos reservados &copy; 2023</p>
   </footer>
-
 </body>
 
 </html>

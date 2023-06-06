@@ -39,6 +39,37 @@ if ($result->num_rows > 0) {
   exit;
 }
 
+$sql = "SELECT * FROM dados_pessoal WHERE usuario_id = $idUsuario";
+$resultDadosPessoais = $conn->query($sql);
+if ($resultDadosPessoais->num_rows > 0) {
+  // Dados pessoais encontrados, exibe os dados
+  $dadosPessoais = $resultDadosPessoais->fetch_assoc();
+  $nome = isset($dadosPessoais['Nome']) ? $dadosPessoais['Nome'] : "";
+  $cpf = isset($dadosPessoais['CPF']) ? $dadosPessoais['CPF'] : "";
+  $telefone = isset($dadosPessoais['Telefone']) ? $dadosPessoais['Telefone'] : "";
+  $dataNascimento = isset($dadosPessoais['data_aniversario']) ? $dadosPessoais['data_aniversario'] : "";
+  $nacionalidade = isset($dadosPessoais['nacionalidade']) ? $dadosPessoais['nacionalidade'] : "";
+  $genero = isset($dadosPessoais['genero']) ? $dadosPessoais['genero'] : "";
+  $rua = isset($dadosPessoais['rua']) ? $dadosPessoais['rua'] : "";
+  $numero = isset($dadosPessoais['numero']) ? $dadosPessoais['numero'] : "";
+  $cidade = isset($dadosPessoais['cidade']) ? $dadosPessoais['cidade'] : "";
+  $cep = isset($dadosPessoais['CEP']) ? $dadosPessoais['CEP'] : "";
+  $estado = isset($dadosPessoais['estado']) ? $dadosPessoais['estado'] : "";
+} else {
+  // Dados pessoais não encontrados
+  $nome = "";
+  $cpf = "";
+  $telefone = "";
+  $dataNascimento = "";
+  $nacionalidade = "";
+  $genero = "";
+  $rua = "";
+  $numero = "";
+  $cidade = "";
+  $cep = "";
+  $estado = "";
+}
+
 $conn->close();
 ?>
 
@@ -60,51 +91,11 @@ $conn->close();
     document.getElementById('confirmarButton').style.display = 'block';
   }
   function enviarDados() {
-  var nome = document.getElementById('nome').value;
-  var cpf = document.getElementById('cpf').value;
-  var telefone = document.getElementById('telefone').value;
-  var dataNascimento = document.getElementById('data_aniversario').value;
-  var nacionalidade = document.getElementById('nacionalidade').value;
-  var genero = document.getElementById('genero').value;
-  var rua = document.getElementById('rua').value;
-  var numero = document.getElementById('numero').value;
-  var cidade = document.getElementById('cidade').value;
-  var cep = document.getElementById('CEP').value;
-  var estado = document.getElementById('estado').value;
-
-  var data = {
-    nome: nome,
-    cpf: cpf,
-    telefone: telefone,
-    data_aniversario: dataNascimento,
-    nacionalidade: nacionalidade,
-    genero: genero,
-    rua: rua,
-    numero: numero,
-    cidade: cidade,
-    CEP: cep,
-    estado: estado
-  };
-
-  fetch('salvar_dados_pessoais.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams(data)
-  })
-    .then(function(response) {
-      if (response.ok) {
-        console.log("Dados pessoais salvos com sucesso!");
-        window.location.href = 'salvar_dados_pessoais.php';
-      } else {
-        console.log("Erro ao salvar os dados pessoais.");
-      }
-    })
-    .catch(function(error) {
-      console.log("Erro ao enviar a requisição:", error);
-    });
-}
+      var form = document.getElementById('personalDataForm'); // Obtém o elemento do formulário
+    form.action = 'salvar_dados_pessoais.php'; // Define a ação do formulário para 'salvar_dados_pessoais.php'
+    form.method = 'POST'; // Define o método do formulário como POST
+    form.submit(); // Envia o formulário
+  }
 </script>
 
 </head>
@@ -127,68 +118,69 @@ $conn->close();
   <div class="container">
     <h2>Dados Pessoais</h2>
     <form id="personalDataForm" method="post">
-      <div class="form-group">
-        <label for="usuario">Usuário:</label>
-        <input type="text" id="usuario" name="usuario" value="<?php echo $usuario; ?>" disabled>
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" value="<?php echo $email; ?>" disabled>
-      </div>
-      <!-- Restante dos campos do formulário -->
-      <div class="form-group">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" disabled>
-      </div>
-      <div class="form-group">
-        <label for="cpf">CPF:</label>
-        <input type="text" id="cpf" name="cpf" disabled>
-      </div>
-      <div class="form-group">
-        <label for="telefone">Telefone:</label>
-        <input type="text" id="telefone" name="telefone" disabled>
-      </div>
-      <div class="form-group">
-        <label for="data_aniversario">Data de Aniversário:</label>
-        <input type="date" id="data_aniversario" name="data_aniversario" disabled>
-      </div>
-      <div class="form-group">
-        <label for="nacionalidade">Nacionalidade:</label>
-        <input type="text" id="nacionalidade" name="nacionalidade" disabled>
-      </div>
-      <div class="form-group">
-        <label for="genero">Gênero:</label>
-        <select id="genero" name="genero" disabled>
-          <option value="masculino">Masculino</option>
-          <option value="feminino">Feminino</option>
-          <option value="outro">Outro</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="rua">Rua:</label>
-        <input type="text" id="rua" name="rua" disabled>
-      </div>
-      <div class="form-group">
-        <label for="numero">Número:</label>
-        <input type="text" id="numero" name="numero" disabled>
-      </div>
-      <div class="form-group">
-        <label for="cidade">Cidade:</label>
-        <input type="text" id="cidade" name="cidade" disabled>
-      </div>
-      <div class="form-group">
-        <label for="CEP">CEP:</label>
-        <input type="text" id="CEP" name="CEP" disabled>
-      </div>
-      <div class="form-group">
-        <label for="estado">Estado:</label>
-        <input type="text" id="estado" name="estado" disabled>
-      </div>
-      <div class="form-group button-group">
-        <button id="alterarButton" type="button" onclick="habilitarCampos()">Alterar</button>
-        <button id="confirmarButton" type="button" style="display: none;" onclick="enviarDados()">Confirmar</button>
-      </div>
-    </form>
+  <div class="form-group">
+    <label for="usuario">Usuário:</label>
+    <input type="text" id="usuario" name="usuario" value="<?php echo $usuario; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" value="<?php echo $email; ?>" disabled>
+  </div>
+  <!-- Restante dos campos do formulário -->
+  <div class="form-group">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" value="<?php echo $nome; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="cpf">CPF:</label>
+    <input type="text" id="cpf" name="cpf" value="<?php echo $cpf; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="telefone">Telefone:</label>
+    <input type="text" id="telefone" name="telefone" value="<?php echo $telefone; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="data_aniversario">Data de Aniversário:</label>
+    <input type="date" id="data_aniversario" name="data_aniversario" value="<?php echo $dataNascimento; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="nacionalidade">Nacionalidade:</label>
+    <input type="text" id="nacionalidade" name="nacionalidade" value="<?php echo $nacionalidade; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="genero">Gênero:</label>
+    <select id="genero" name="genero" disabled>
+      <option value="masculino" <?php if ($genero == 'masculino') echo 'selected'; ?>>Masculino</option>
+      <option value="feminino" <?php if ($genero == 'feminino') echo 'selected'; ?>>Feminino</option>
+      <option value="outro" <?php if ($genero == 'outro') echo 'selected'; ?>>Outro</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="rua">Rua:</label>
+    <input type="text" id="rua" name="rua" value="<?php echo $rua; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="numero">Número:</label>
+    <input type="text" id="numero" name="numero" value="<?php echo $numero; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="cidade">Cidade:</label>
+    <input type="text" id="cidade" name="cidade" value="<?php echo $cidade; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="CEP">CEP:</label>
+    <input type="text" id="CEP" name="CEP" value="<?php echo $cep; ?>" disabled>
+  </div>
+  <div class="form-group">
+    <label for="estado">Estado:</label>
+    <input type="text" id="estado" name="estado" value="<?php echo $estado; ?>" disabled>
+  </div>
+  <div class="form-group button-group">
+    <button id="alterarButton" type="button" onclick="habilitarCampos()">Alterar</button>
+    <button id="confirmarButton" type="button" style="display: none;" onclick="enviarDados()">Confirmar</button>
+  </div>
+</form>
+
   </div>
 </section>
 

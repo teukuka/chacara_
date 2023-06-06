@@ -18,10 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Consulta SQL para verificar o usuário ou email e senha no banco de dados
-  $sql = "SELECT * FROM usuario WHERE (usuario = '$usuario_email' OR email = '$usuario_email') AND senha = '$senha'";
-  $result = $conn->query($sql);
+  // Consulta SQL para verificar o usuário ou email e senha no banco de dados
+$sql = "SELECT * FROM usuario WHERE (usuario = '$usuario_email' OR email = '$usuario_email') AND senha = '$senha'";
+$result = $conn->query($sql);
 
-  if ($result->num_rows > 0) {
+if ($result->num_rows > 0) {
   // Iniciar a sessão
   session_start();
 
@@ -35,13 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Definir a variável "logged_in" como true
   $_SESSION['logged_in'] = true;
 
-  // Usuário autenticado, redirecionar para a página desejada
-  header("Location: newindex.php");
-  exit;
-}
-else {
-    echo "Usuário ou senha inválidos.";
+  // Verificar se o id_usuario é igual a 1
+  if ($id_usuario == 1) {
+    // Usuário com id_usuario igual a 1, redirecionar para admin.php
+    header("Location: admin.php");
+    exit;
+  } else {
+    // Usuário autenticado, redirecionar para a página desejada
+    header("Location: newindex.php");
+    exit;
   }
+} else {
+  echo "Usuário ou senha inválidos.";
+}
 
   // Fechar a conexão com o banco de dados
   $conn->close();

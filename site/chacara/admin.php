@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -27,6 +28,7 @@
           <button onclick="consultarReservas()">Consultar Reservas</button>
           <button onclick="consultarFuncionarios()">Consultar Funcionários</button>
           <button onclick="consultarUsuarios()">Consultar Usuarios</button>
+          <button onclick="consultarGasto()">Consultar/Adicionar Gasto</button>
           <button onclick="gerarRelatorios()">Relatórios</button>
       </div>
     </div>
@@ -54,6 +56,10 @@
 
   function consultarFuncionarios() {
     window.location.href = "Cfuncionario.php";
+  }
+
+  function consultarGasto() {
+    window.location.href = "Cgastos.php"
   }
 
   function gerarRelatorios() {
